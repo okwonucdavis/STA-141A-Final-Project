@@ -1,0 +1,267 @@
+---
+title: "STA141A Final Project: COVID-19 Data"
+author: "Oh Seung Kwon, 917090323"
+date: "12MAR2022"
+output: 
+  html_document:
+    df_print: paged
+    number_sections: yes
+---
+
+# Abstract 
+
+In this project, we will look at 8 different sections in order to create a confirmation of the observations we made in a test. Because our main topic of interest in our report is based upon COVID-19, we will have a lot of real world implications that our dataset will compose of. Our introduction will include similar tests and the questions of interests.These tests and questions of interests should provide meaningful analysis to how this can affect real world situations and the basis that can help promote future scientific studies. We will also include background information of how this study will be conducted. This includes the explanation behind why this type of information will allows us to come to a conclusion in our key interests and questions of interests. Three types of analysis can be conducted in order to create a conclusion to our study based on our null and alternative hypothesis. These analysis methods includes descriptive analysis, inferential analysis, and sensitive analysis. Lastly after our conclusion, we will be able to discuss its impact on our study, any errors that were come across, and future recommendations. Not only will our discussion include any recommendations that may have influenced our data set, but how we can further provide assistance to any future reports that will occur.
+
+# Introduction
+
+
+COVID-19 is an ongoing pandemic that keeps affecting our society to this day. The first cases of COVID-19 was evident in Wuhan, China, and during 2020 these cases started spreading around the world.(Reference 1) Since then, the World Health Organization has been collecting data regarding COVID cases and deaths. This type of analysis is extremely important in finding a vaccine that can cure COVID because without proper analysis we cannot see if the vaccine displays an actual result into lowering COVID cases and death. 
+
+The main premise of this study is to see if a countries with similar populations show similar or differing cases when it comes to COVID daily cases of infection and death. The intuition behind this study is to provide further assistance to future and/or existing studies about how a countries population can affect the amount of COVID cases and death daily. This type of information can provide those countries in the danger area to provide more assistance, testing, and vaccination for their citizens to help combat the virus.
+
+
+
+# Questions of Interest
+1.) Will one of the two countries with similar populations have a significant effect on the number of new cases and deaths every day?
+
+2.) If they are main effects, does the land size of the country influence the COVID infection and death rates?
+
+ 
+# Background
+
+
+Our COVID data set contains analysis of COVID cases per country from the dates of 03JAN2020 to 17FEB2022. Our data set includes the date reported, country code, country, WHO region, new COVID cases per date, cumulative COVID cases, new death rates, and cumulative deaths. Although our data has been presented to us through the World Health Organization, these numbers are subject to bias based on the number of testing a country does and if the country is truly giving correct numbers to the WHO. (Reference 3)
+
+Based on (Reference 2), we can see that the United Kingdom and France both have very similar population numbers at around 65,000,000 people for both countries. For this reason, we can use the UK and France as our subjects of interests for the two countries. 
+
+# Descriptive analysis 
+```{r}
+library(tidyverse)
+Covid <- read.csv("~/Downloads/WHO-COVID-19-global-data.csv")
+```
+
+Based on our data, France began to receive new infection cases of COVID-19 among their populace in 24JAN2020. The UK got their first infection cases of COVID-19 on 01FEB2020. These dates are only different by one week so they are fairly similar.
+
+```{r}
+France = filter(Covid, Country == "France")
+UK = filter(Covid, Country == "The United Kingdom")
+France
+UK
+```
+
+As stated before, our dataset consists of the COVID cases date reported from January 03,2020 to February 17, 2022. We can distinguish the two groups through the country that is being reported through their country code and country name. The data that is supplying our report is from the World Health Organization centered in Europe. We can also see any reports of new COVID infection cases, cumulative infection cases, new deaths related to COVID, and cumulative death cases through COVID. 
+
+```{r}
+datatest = select(Covid, Country, New_cases, New_deaths)
+Data = filter(datatest, Country == c("France", "The United Kingdom"))
+Data
+```
+
+This is a filtered data set that we will use for our inferential analysis. 
+
+```{r}
+New_cases_France = select(France, New_cases)
+France_summary = summary(New_cases_France)
+France_summary
+```
+
+From this 5 number summary for the amount of new COVID cases in France, we can see that the mean value of number of new infection cases for COVID are 27,470 cases in France per day. France also has a huge max numbers of new cases in a day which is 500563.
+
+```{r}
+New_cases_UK = select(UK, New_cases)
+UK_summary = summary(New_cases_UK)
+UK_summary
+```
+
+From this 5 number summary for the amount of new COVID cases in the UK, we can see that the mean value of number of new infection cases for COVID are 23,742 cases in the UK per day. The UKs max number of cases in one day is 273487 which is alot lower than Frances max.
+
+```{r}
+New_deathcases_France = select(France, New_deaths)
+Francedeath_summary = summary(New_deathcases_France)
+Francedeath_summary
+```
+
+For our 5 number summary regarding deaths relating to COVID for France, we can see that France had an average of 171 deaths per day.
+
+```{r}
+New_deathcases_UK = select(UK, New_deaths)
+UKdeath_summary = summary(New_deathcases_UK)
+UKdeath_summary
+```
+
+For our 5 number summary regarding deaths relating to COVID for the UK, we can see that the UK had an average of 206 deaths per day. 
+
+Based on our 5 number summaries on locating the average number of new COVID infection cases and deaths per day, we can see differing viewpoints. For example, France had a higher new COVID infection rate per day than the UK, however the UK had a higher death rate due to COVID than France. This can maybe be explained because their may be more people in the UK that are at high risk of COVID relating deaths than in France.
+
+We can also summarize more of our findings when it comes to the overall COVID cases and deaths for both countries.
+
+```{r}
+cases_France = select(France, Cumulative_cases)
+casesFrance_summary = summary(cases_France)
+casesFrance_summary
+```
+```{r}
+deathcases_France = select(France, Cumulative_deaths)
+deathFrancedeath_summary = summary(deathcases_France)
+deathFrancedeath_summary
+```
+
+Frances cumulative cases had a mean of 3879515 while the cumulative deaths were 68251. 
+
+```{r}
+cases_UK = select(UK, Cumulative_cases)
+casesUK_summary = summary(cases_UK)
+casesUK_summary
+```
+```{r}
+deathcases_UK = select(UK, Cumulative_deaths)
+deathUKdeath_summary = summary(deathcases_UK)
+deathUKdeath_summary
+```
+
+The UK had a cumulative case number of 4181718. The cumulative deaths were at 160038. 
+
+Based on our observation regarding the cumulative cases and deaths among the two countries, we saw tat the UK had a higher case and death number than France. 
+
+
+We can further examine any analysis of our data through a visual aid. This can be done through graphing our data based on the time reported. Because there is more than 500 times observed, we will have to rely on the graph to see the shape and relationship of the COVID new and cumulative infection cases and new and cumulative deaths per country.
+
+```{r}
+ggplot(data=France, mapping=aes(x=Date_reported, y=Cumulative_cases)) +
+  geom_boxplot() + 
+  xlab("Date Reported") + 
+  ylab("Cumulative Cases") +
+  ggtitle("France Cumulative COVID Cases Timeline")
+ggplot(data=UK, mapping=aes(x=Date_reported, y=Cumulative_cases)) +
+  geom_boxplot() + 
+  xlab("Date Reported") + 
+  ylab("Cumulative Cases") +
+  ggtitle("UK Cumulative COVID Cases Timeline")
+ggplot(data=France, mapping=aes(x=Date_reported, y=New_cases)) +
+  geom_boxplot() + 
+  xlab("Date Reported") + 
+  ylab("New Cases") +
+  ggtitle("France New COVID Cases Timeline")
+ggplot(data=UK, mapping=aes(x=Date_reported, y=New_cases)) +
+  geom_boxplot() + 
+  xlab("Date Reported") + 
+  ylab("New Cases") +
+  ggtitle("UK New COVID Cases Timeline")
+```
+
+Based on our plots for the new and cumulative COVID cases recorded based on time for France and the UK, we can see that they both share an exponential type of relationship for cumulative cases. The new cases for both countries shows several spikes depending on the date reported. 
+
+
+We can also look at the relationships on time and deaths for new and cumulative for both countries.
+```{r}
+ggplot(data=France, mapping=aes(x=Date_reported, y=Cumulative_deaths)) +
+  geom_boxplot() + 
+  xlab("Date Reported") + 
+  ylab("Cumulative Deaths") +
+  ggtitle("France Cumulative Deaths Timeline")
+ggplot(data=UK, mapping=aes(x=Date_reported, y=Cumulative_deaths)) +
+  geom_boxplot() + 
+  xlab("Date Reported") + 
+  ylab("Cumulative Deaths") +
+  ggtitle("UK Cumulative Deaths Timeline")
+ggplot(data=France, mapping=aes(x=Date_reported, y=New_deaths)) +
+  geom_boxplot() + 
+  xlab("Date Reported") + 
+  ylab("New Deaths") +
+  ggtitle("France New Deaths Timeline")
+ggplot(data=UK, mapping=aes(x=Date_reported, y=New_deaths)) +
+  geom_boxplot() + 
+  xlab("Date Reported") + 
+  ylab("New Deaths") +
+  ggtitle("UK New Deaths Timeline")
+```
+The cumulative deaths for both countries have a similar shape when they are plotted. However, the new death cases show much more abnormal spikes than the new cumulative cases for both countries. 
+
+Based on our visual observations, it seems as if France has a larger average of new COVID cases while the UK has a larger average of new COVID related deaths. 
+
+# Inferential analysis
+For inferential analysis, I plan to use two models to conduct analysis of our study. These will include the One Way ANOVA Test and Tukey's HSD test if the main effect is significant so that we can find the significant country. We will use the One Way ANOVA test because we only have one variable that we want to test which is the country and its effects on the new cases. 
+
+The assumptions for the One Way ANOVA Test includes that the populations of our study is normally distributed and equal variance. Our Tukey's HSD test assumes that we have random independent samples and our population has normal distribution. 
+
+Our hypothesis are as follows, and we will assume our significance level (a) is 0.05.
+
+H0 = main effects are no significant
+Ha = main effects are significant
+
+We can test for these effects through the one way ANOVA model because we want to find out if the country of origin has a significant effect. 
+
+For our one way ANOVA model, we can propose the following model:
+Yij = ui + eij
+```{r}
+model = aov(New_cases~Country , data = Data)
+summary(model)
+```
+
+Because our p-value is 0.316, and which is larger than our significance level of 0.05. We do not have enough evidence to reject our null hypothesis. We can conclude that for COVID cases, the country of origin does not have a significant effect. 
+
+However, we can also find out if the countries has a significant effect on the new death rates by COVID. We will do a one way ANOVA test for the new death reports as well.
+
+```{r}
+model1 = aov(New_deaths~Country , data = Data)
+summary(model1)
+```
+
+We are keeping the same hypothesis and significance level. Based on our ANOVA test, we get a p value of 0.125.
+
+Because our p value is larger than our significance level of 0.05, we do not have enough evidence to reject our null hypothesis. Again, we can conclude that the country does not have an effect on COVID death rates.
+
+
+# Sensitivity analysis
+
+Now, we can start to make our residual plots of our fitted values.
+
+Our first plot is regarding the new covid cases for both countries (UK and France)
+
+```{r}
+plot(model)
+```
+
+Our residual vs fitted plot for the new cases does not show a scattered plot at all, in facts it shows fitted values from around 23500 and at 29000. 
+
+Our normal qq plot does not show symmetric normal distribution because the new cases rate is more exponential rather than stymetric for both countries.
+
+Our scale location plot like the residual vs fitted plot does not have a spread for standardized residuals squarerooted against the fitted values.
+
+When we look at our plots concerning the new deaths, we can expect to see the same. 
+
+```{r}
+plot(model1)
+```
+
+This can be explained because our data is not showing symmetric data for the new cases and new deaths because cases and deaths will increase daily for both countries as it will continue to do throughout our time. 
+
+# Discussion (Needs to be finished no later than 28FEB22)
+A brief recap of this project.
+In conclusion, this study was conducted in order to see if there one of the two selected countries(France and UK) with similar populations have a significant effect on the number of new cases and deaths every day. Based on our inferential analysis, we were able to confirm that the there are no significant effects on new cases and death rates among nations that have similar populations.
+
+However, this can help us answer our other question of interest if a country with a different population will have a much higher COVID infection and death rate. This can be the premise of a future study but we can hypothesis that there will not be any significant effects based on our test.
+
+Because our data set was based on findings by WHO, there is a strong possibility that some nations can either lie about their COVID numbers or even citizens who do not report their sickness. This can cause a lot of errors in our analysis and slow down progress with developing a countermeasure to fight the infection. This study and realization can further give scientists more data and caveats for further experiments to consider before conducting any analysis and coming to a conclusion.
+
+
+# Acknowledgement {-} 
+Group 6 (Differing projects):
+
+Oh Seung Kwon
+Sandeep Nair
+
+# Reference {-} 
+1.) (Page J, Hinshaw D, McKay B (26 February 2021). "In Hunt for COVID-19 Origin, Patient Zero Points to Second Wuhan Market – The man with the first confirmed infection of the new coronavirus told the WHO team that his parents had shopped there". The Wall Street Journal. Retrieved 27 February 2021.)
+
+2.) Countries in the world by population (2022). Worldometer. (n.d.). Retrieved March 12, 2022, from https://www.worldometers.info/world-population/population-by-country/ 
+
+3.) World Health Organization. (n.d.). Coronavirus disease (covid-19) situation reports. World Health Organization. Retrieved March 12, 2022, from https://www.who.int/emergencies/diseases/novel-coronavirus-2019/situation-reports 
+
+
+# Session info {-}
+
+
+```{r}
+sessionInfo()
+```
